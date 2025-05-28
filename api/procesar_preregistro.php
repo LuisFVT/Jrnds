@@ -1,4 +1,4 @@
-<?php // Procesa pre-registro de estudiante ?>
+
 <?php
 // api/procesar_preregistro.php
 require 'config.php';

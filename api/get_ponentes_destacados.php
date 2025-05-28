@@ -1,4 +1,4 @@
-<?php // API ponentes destacados ?>
+
 <?php
 // api/get_ponentes_destacados.php
 header('Content-Type: application/json');

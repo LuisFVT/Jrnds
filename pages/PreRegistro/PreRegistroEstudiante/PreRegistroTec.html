@@ -1,0 +1,57 @@
+<!-- Formulario para estudiantes -->
+ <!-- pages/PreRegistro.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pre-registro - Jornadas ITP</title>
+<link rel="stylesheet" href="./../styles/main.css">
+</head>
+<body>
+  <header>
+    <h1>Pre-registro para estudiantes</h1>
+    <nav>
+    <a href="/index.html">Inicio</a>
+    </nav>
+  </header>
+
+  <section>
+<form action="/Jornadas/Jornadas_ITP_1/api/procesar_preregistro.php" method="POST">
+    <label>Nombre completo:
+        <input type="text" name="nombre" required>
+    </label>
+
+    <label>Correo institucional:
+        <input type="email" name="email" pattern=".*@puebla\.tecnm\.mx" required>
+    </label>
+
+    <label>Número de Control:
+        <input type="text" name="matricula" required>
+    </label>
+
+    <label>Número de teléfono:
+        <input type="tel" name="telefono">
+    </label>
+
+    <label>Carrera:
+        <select name="carrera" required>
+            <option value="tics">TICs</option>
+            <option value="industrial">Industrial</option>
+            <option value="electrica">Eléctrica</option>
+            <option value="electronica">Electrónica</option>
+            <option value="mecanica">Mecánica</option>
+            <option value="logistica">Logística</option>
+            <option value="gestion">Gestión</option>
+            <option value="administración">Administración</option>
+        </select>
+    </label>
+
+    <button type="submit">Enviar pre-registro</button>
+</form>
+</section>
+
+<footer>
+    <p>© Instituto Tecnológico de Puebla</p>
+</footer>
+</body>
+</html>
