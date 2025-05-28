@@ -1,4 +1,5 @@
 
+
 <?php
 // api/get_jornadas.php
 header('Content-Type: application/json');
