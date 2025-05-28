@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $grado_academico = $_POST['grado_academico'] ?? '';
     
     // Directorio para guardar archivos
-    $uploadDir = __DIR__ . '/../uploads/';
+    $uploadDir = __DIR__ . '/../uploads/ponentes/';
     if (!file_exists($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     }
