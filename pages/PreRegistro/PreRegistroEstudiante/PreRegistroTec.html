@@ -1,57 +1,301 @@
-<!-- Formulario para estudiantes -->
- <!-- pages/PreRegistro.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pre-registro - Jornadas ITP</title>
-<link rel="stylesheet" href="./../../../styles/main.css">
+  <link rel="stylesheet" href="./../../../styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Estilos para los talleres */
+    .talleres-container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .talleres-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    
+    .taller-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: white;
+    }
+    
+    .taller-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .taller-icon {
+      background-color: #f0f0f0;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 2.5rem;
+      color: #2c3e50;
+    }
+    
+    .taller-info {
+      padding: 1.5rem;
+    }
+    
+    .taller-info h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    
+    .taller-precio {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #27ae60;
+      margin: 0.5rem 0;
+    }
+    
+    .taller-descripcion {
+      color: #555;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .taller-fecha {
+      font-size: 0.9rem;
+      color: #7f8c8d;
+    }
+    
+    .taller-selector {
+      margin-top: 1rem;
+    }
+    
+    .taller-selector input {
+      margin-right: 0.5rem;
+    }
+    
+    /* Estilos para el formulario */
+    form {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    form label {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    form input, form select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    button[type="submit"] {
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    
+    button[type="submit"]:hover {
+      background-color: #1a252f;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>Pre-registro para estudiantes</h1>
     <nav>
-    <a href="/index.html">Inicio</a>
+      <a href="./../../../../index.html">Inicio</a>
     </nav>
   </header>
 
+  <section class="talleres-container">
+    <h2>Talleres Disponibles</h2>
+    <div class="talleres-grid" id="talleres-list">
+      <!-- Los talleres se cargarán aquí dinámicamente -->
+      <div class="loading">Cargando talleres...</div>
+    </div>
+  </section>
+
   <section>
-<form action="./../../../api/procesar_preregistro.php" method="POST">
-    <label>Nombre completo:
+    <form action="./../../../api/procesar_preregistro.php" method="POST" id="registro-form">
+      <label>Nombre completo:
         <input type="text" name="nombre" required>
-    </label>
+      </label>
 
-    <label>Correo institucional:
+      <label>Correo institucional:
         <input type="email" name="email" pattern=".*@puebla\.tecnm\.mx" required>
-    </label>
+      </label>
 
-    <label>Número de Control:
+      <label>Número de Control:
         <input type="text" name="matricula" required>
-    </label>
+      </label>
 
-    <label>Número de teléfono:
+      <label>Número de teléfono:
         <input type="tel" name="telefono">
-    </label>
+      </label>
 
-    <label>Carrera:
+      <label>Carrera:
         <select name="carrera" required>
-            <option value="tics">TICs</option>
-            <option value="industrial">Industrial</option>
-            <option value="electrica">Eléctrica</option>
-            <option value="electronica">Electrónica</option>
-            <option value="mecanica">Mecánica</option>
-            <option value="logistica">Logística</option>
-            <option value="gestion">Gestión</option>
-            <option value="administración">Administración</option>
+          <option value="tics">TICs</option>
+          <option value="industrial">Industrial</option>
+          <option value="electrica">Eléctrica</option>
+          <option value="electronica">Electrónica</option>
+          <option value="mecanica">Mecánica</option>
+          <option value="logistica">Logística</option>
+          <option value="gestion">Gestión</option>
+          <option value="administración">Administración</option>
         </select>
-    </label>
+      </label>
+      
+      <label>Talleres seleccionados:</label>
+      <div id="talleres-seleccionados">
+        <!-- Aquí se mostrarán los talleres seleccionados -->
+        <p>Selecciona talleres de la lista superior</p>
+      </div>
+      
+      <input type="hidden" name="talleres_seleccionados" id="talleres-seleccionados-input">
 
-    <button type="submit">Enviar pre-registro</button>
-</form>
-</section>
+      <button type="submit">Enviar pre-registro</button>
+    </form>
+  </section>
 
-<footer>
+  <footer>
     <p>© Instituto Tecnológico de Puebla</p>
-</footer>
+  </footer>
+
+  <script>
+    // Cargar talleres al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      fetchTalleres();
+    });
+
+    function fetchTalleres() {
+      fetch('./../../../api/get_talleres.php')
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            renderTalleres(data.data);
+            setupTallerSelection();
+          } else {
+            document.getElementById('talleres-list').innerHTML = 
+              '<p class="error">No se pudieron cargar los talleres. Intenta más tarde.</p>';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('talleres-list').innerHTML = 
+            '<p class="error">Error al cargar los talleres. Verifica tu conexión.</p>';
+        });
+    }
+
+    function renderTalleres(talleres) {
+      const container = document.getElementById('talleres-list');
+      
+      if (talleres.length === 0) {
+        container.innerHTML = '<p>No hay talleres disponibles en este momento.</p>';
+        return;
+      }
+      
+      container.innerHTML = talleres.map(taller => `
+        <div class="taller-card">
+          <div class="taller-icon">
+            <i class="fas ${getIconForTaller(taller.tipo)}"></i>
+          </div>
+          <div class="taller-info">
+            <h3>${taller.nombre}</h3>
+            <div class="taller-precio">$${taller.precio || '0.00'} MXN</div>
+            <div class="taller-tema"><strong>Tema:</strong> ${taller.tema_principal}</div>
+            <p class="taller-descripcion">${taller.descripcion.substring(0, 100)}...</p>
+            <div class="taller-fecha">
+              <strong>Horario:</strong> ${formatFecha(taller.fecha_hora_inicio)} - ${formatFecha(taller.fecha_hora_fin)}
+            </div>
+            <div class="taller-selector">
+              <label>
+                <input type="checkbox" class="taller-checkbox" value="${taller.id}">
+                Seleccionar este taller
+              </label>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getIconForTaller(tipo) {
+      const icons = {
+        'taller': 'fa-laptop-code',
+        'jornada': 'fa-calendar-alt',
+        'conferencia': 'fa-chalkboard-teacher'
+      };
+      return icons[tipo] || 'fa-book';
+    }
+
+    function formatFecha(fechaStr) {
+      const fecha = new Date(fechaStr);
+      return fecha.toLocaleDateString('es-MX', {
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    function setupTallerSelection() {
+      const checkboxes = document.querySelectorAll('.taller-checkbox');
+      const seleccionadosContainer = document.getElementById('talleres-seleccionados');
+      const hiddenInput = document.getElementById('talleres-seleccionados-input');
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          updateTalleresSeleccionados();
+        });
+      });
+      
+      function updateTalleresSeleccionados() {
+        const seleccionados = Array.from(document.querySelectorAll('.taller-checkbox:checked'))
+          .map(cb => cb.value);
+        
+        hiddenInput.value = seleccionados.join(',');
+        
+        if (seleccionados.length === 0) {
+          seleccionadosContainer.innerHTML = '<p>Selecciona talleres de la lista superior</p>';
+          return;
+        }
+        
+        // Obtener nombres de talleres seleccionados
+        const nombresSeleccionados = seleccionados.map(id => {
+          const card = document.querySelector(`.taller-checkbox[value="${id}"]`).closest('.taller-card');
+          return card.querySelector('h3').textContent;
+        });
+        
+        seleccionadosContainer.innerHTML = `
+          <h4>Talleres seleccionados (${seleccionados.length}):</h4>
+          <ul>
+            ${nombresSeleccionados.map(nombre => `<li>${nombre}</li>`).join('')}
+          </ul>
+        `;
+      }
+    }
+  </script>
 </body>
 </html>

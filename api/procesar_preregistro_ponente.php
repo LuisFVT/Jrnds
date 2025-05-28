@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $carrera
         ]);
         
-        echo "<script>alert('Pre-registro exitoso'); window.location.href = '../index.html';</script>";
+        echo "<script>alert('Pre-registro exitoso'); window.location.href = 'c';</script>";
     } catch (PDOException $e) {
         // Eliminar archivos subidos si hubo error
         if (!empty($cv_url)) unlink(__DIR__ . '/../' . $cv_url);
