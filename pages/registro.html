@@ -1,0 +1,78 @@
+<!-- Formulario para ponentes -->
+ <!-- pages/registro.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro - Jornadas ITP</title>
+  <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+  <header>
+    <h1>Registro de Participación</h1>
+    <nav>
+      <a href="../index.html">Inicio</a>
+    </nav>
+  </header>
+
+  <section>
+    <form action="../api/procesar_registro.php" method="POST" enctype="multipart/form-data">
+      <label>Nombre completo:
+        <input type="text" name="nombre" required>
+      </label>
+
+      <label>Correo electrónico:
+        <input type="email" name="email" required>
+      </label>
+
+      <label>Teléfono:
+        <input type="tel" name="telefono">
+      </label>
+
+      <label>Grado académico:
+        <input type="text" name="grado_academico">
+      </label>
+
+      <label>Rol:
+        <select name="rol" required>
+          <option value="ponente">Ponente</option>
+            <option value="estudiante">Estudiante</option>
+            <option value="profesor">Profesor</option>
+        </select>
+      </label>
+
+      <label>Tipo de participación:
+        <input type="checkbox" name="tipo[]" value="conferencia"> Conferencia
+        <input type="checkbox" name="tipo[]" value="taller"> Taller
+      </label>
+
+      <label>Duración estimada:
+        <input type="text" name="duracion">
+      </label>
+
+      <label>Tema a desarrollar:
+        <input type="text" name="tematica" required>
+      </label>
+
+      <label>Presentación sobre ti:
+        <textarea name="presentacion" required></textarea>
+      </label>
+
+      <label>Adjuntar CV (PDF):
+        <input type="file" name="cv" accept=".pdf" required>
+      </label>
+
+      <label>Foto personal:
+        <input type="file" name="foto" accept="image/*" required>
+      </label>
+
+      <button type="submit">Enviar datos</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© Instituto Tecnológico de Puebla</p>
+  </footer>
+</body>
+</html>
