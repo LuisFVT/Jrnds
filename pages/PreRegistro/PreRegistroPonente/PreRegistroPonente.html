@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pre-registro Ponentes - Jornadas ITP</title>
+  <link rel="stylesheet" href="./../../../styles/main.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        try {
+          const formData = new FormData(form);
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.text();
+          
+          // Si el PHP devuelve un script, lo ejecutamos
+          if (result.includes('<script>')) {
+            document.body.innerHTML += result;
+          } else {
+            alert(result);
+          }
+        } catch (error) {
+          alert('Error al enviar el formulario: ' + error.message);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Pre-registro para ponentes</h1>
+    <nav>
+      <a href="/index.html">Inicio</a>
+    </nav>
+  </header>
+
+  <section>
+    <form action="./../../../api/procesar_preregistro_ponente.php" method="POST" enctype="multipart/form-data">
+      <label>Nombre completo:
+        <input type="text" name="nombre" required>
+      </label>
+
+      <label>Correo electrónico:
+        <input type="email" name="email" required>
+      </label>
+
+      <label>Número de teléfono:
+        <input type="tel" name="telefono">
+      </label>
+
+      <label>Área de especialización:
+        <select name="carrera" required>
+          <option value="tics">TICs</option>
+          <option value="industrial">Industrial</option>
+          <option value="electrica">Eléctrica</option>
+          <option value="electronica">Electrónica</option>
+          <option value="mecanica">Mecánica</option>
+          <option value="logistica">Logística</option>
+          <option value="gestion">Gestión</option>
+          <option value="administración">Administración</option>
+          <option value="otro">Otra área</option>
+        </select>
+      </label>
+
+      <label>Grado académico:
+        <select name="grado_academico" required>
+          <option value="Licenciatura">Licenciatura</option>
+          <option value="Maestría">Maestría</option>
+          <option value="Doctorado">Doctorado</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </label>
+
+      <label>Curriculum Vitae (PDF):
+        <input type="file" name="cv_url" accept=".pdf" required>
+      </label>
+
+      <label>Foto de perfil:
+        <input type="file" name="foto_url" accept="image/*" required>
+      </label>
+
+      <button type="submit">Enviar pre-registro</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© Instituto Tecnológico de Puebla</p>
+  </footer>
+</body>
+</html>
