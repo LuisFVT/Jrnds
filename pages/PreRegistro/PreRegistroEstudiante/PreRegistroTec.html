@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pre-registro - Jornadas ITP</title>
   <link rel="stylesheet" href="./../../../styles/main.css">
+  <link rel="stylesheet" href="./../../../styles/Preregistro.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     /* Estilos para los talleres */
@@ -127,13 +128,6 @@
     </nav>
   </header>
 
-  <section class="talleres-container">
-    <h2>Talleres Disponibles</h2>
-    <div class="talleres-grid" id="talleres-list">
-      <!-- Los talleres se cargarán aquí dinámicamente -->
-      <div class="loading">Cargando talleres...</div>
-    </div>
-  </section>
 
   <section>
     <form action="./../../../api/procesar_preregistro.php" method="POST" id="registro-form">
@@ -166,13 +160,89 @@
         </select>
       </label>
       
-      <label>Talleres seleccionados:</label>
-      <div id="talleres-seleccionados">
-        <!-- Aquí se mostrarán los talleres seleccionados -->
-        <p>Selecciona talleres de la lista superior</p>
+      <label>Selecciona los talleres:</label>
+      <div id="talleres-lista" class="talleres-grid">
+        <!-- Aquí se cargarán los talleres dinámicamente -->
+        <p>Cargando talleres...</p>
       </div>
-      
       <input type="hidden" name="talleres_seleccionados" id="talleres-seleccionados-input">
+
+      <script>
+        // Función para calcular el precio con descuento si aplica
+        function calcularPrecio(paquete) {
+          const hoy = new Date();
+          let precio = Number(paquete.precio_base);
+          if (
+            paquete.descuento &&
+            Number(paquete.descuento) > 0 &&
+            paquete.fecha_inicio_descuento &&
+            paquete.fecha_fin_descuento
+          ) {
+            const inicio = new Date(paquete.fecha_inicio_descuento);
+            const fin = new Date(paquete.fecha_fin_descuento);
+            if (hoy >= inicio && hoy <= fin) {
+              precio = precio - Number(paquete.descuento);
+            }
+          }
+          return precio.toFixed(2);
+        }
+
+        // Obtener paquetes desde el backend
+        fetch('./../../../api/get_paquetes.php')
+          .then(res => res.json())
+          .then(data => {
+            const lista = document.getElementById('talleres-lista');
+            lista.innerHTML = '';
+            if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+              data.data.forEach(paquete => {
+                if (!paquete.activo) return; // Solo mostrar paquetes activos
+                const precioFinal = calcularPrecio(paquete);
+                const tieneDescuento =
+                  paquete.descuento &&
+                  Number(paquete.descuento) > 0 &&
+                  paquete.fecha_inicio_descuento &&
+                  paquete.fecha_fin_descuento &&
+                  (new Date() >= new Date(paquete.fecha_inicio_descuento)) &&
+                  (new Date() <= new Date(paquete.fecha_fin_descuento));
+                const card = document.createElement('div');
+                card.className = 'taller-card';
+                card.innerHTML = `
+                  <div class="taller-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                  <div class="taller-info">
+                    <h3>${paquete.nombre}</h3>
+                    <div class="taller-precio">
+                      $${precioFinal}
+                      ${tieneDescuento ? `<span style="color:#e67e22;font-size:0.9em;">(¡Descuento!)</span>` : ''}
+                    </div>
+                    <div class="taller-descripcion">${paquete.descripcion ? paquete.descripcion : ''}</div>
+                    <div class="taller-fecha">
+                      Créditos: <b>${paquete.creditos}</b>
+                      ${tieneDescuento && paquete.fecha_fin_descuento ? `<br><span style="color:#888;font-size:0.85em;">Descuento hasta: ${paquete.fecha_fin_descuento}</span>` : ''}
+                    </div>
+                    <div class="taller-selector">
+                      <label>
+                        <input type="checkbox" value="${paquete.id}" class="taller-checkbox">
+                        Seleccionar
+                      </label>
+                    </div>
+                  </div>
+                `;
+                lista.appendChild(card);
+              });
+            } else {
+              lista.innerHTML = '<p>No hay talleres disponibles.</p>';
+            }
+          });
+
+        // Guardar talleres seleccionados en el input oculto
+        document.addEventListener('change', function(e) {
+          if (e.target.classList.contains('taller-checkbox')) {
+            const seleccionados = Array.from(document.querySelectorAll('.taller-checkbox:checked'))
+              .map(cb => cb.value);
+            document.getElementById('talleres-seleccionados-input').value = seleccionados.join(',');
+          }
+        });
+      </script>
 
       <button type="submit">Enviar pre-registro</button>
     </form>
@@ -181,121 +251,5 @@
   <footer>
     <p>© Instituto Tecnológico de Puebla</p>
   </footer>
-
-  <script>
-    // Cargar talleres al cargar la página
-    document.addEventListener('DOMContentLoaded', function() {
-      fetchTalleres();
-    });
-
-    function fetchTalleres() {
-      fetch('./../../../api/get_talleres.php')
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            renderTalleres(data.data);
-            setupTallerSelection();
-          } else {
-            document.getElementById('talleres-list').innerHTML = 
-              '<p class="error">No se pudieron cargar los talleres. Intenta más tarde.</p>';
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          document.getElementById('talleres-list').innerHTML = 
-            '<p class="error">Error al cargar los talleres. Verifica tu conexión.</p>';
-        });
-    }
-
-    function renderTalleres(talleres) {
-      const container = document.getElementById('talleres-list');
-      
-      if (talleres.length === 0) {
-        container.innerHTML = '<p>No hay talleres disponibles en este momento.</p>';
-        return;
-      }
-      
-      container.innerHTML = talleres.map(taller => `
-        <div class="taller-card">
-          <div class="taller-icon">
-            <i class="fas ${getIconForTaller(taller.tipo)}"></i>
-          </div>
-          <div class="taller-info">
-            <h3>${taller.nombre}</h3>
-            <div class="taller-precio">$${taller.precio || '0.00'} MXN</div>
-            <div class="taller-tema"><strong>Tema:</strong> ${taller.tema_principal}</div>
-            <p class="taller-descripcion">${taller.descripcion.substring(0, 100)}...</p>
-            <div class="taller-fecha">
-              <strong>Horario:</strong> ${formatFecha(taller.fecha_hora_inicio)} - ${formatFecha(taller.fecha_hora_fin)}
-            </div>
-            <div class="taller-selector">
-              <label>
-                <input type="checkbox" class="taller-checkbox" value="${taller.id}">
-                Seleccionar este taller
-              </label>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function getIconForTaller(tipo) {
-      const icons = {
-        'taller': 'fa-laptop-code',
-        'jornada': 'fa-calendar-alt',
-        'conferencia': 'fa-chalkboard-teacher'
-      };
-      return icons[tipo] || 'fa-book';
-    }
-
-    function formatFecha(fechaStr) {
-      const fecha = new Date(fechaStr);
-      return fecha.toLocaleDateString('es-MX', {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    }
-
-    function setupTallerSelection() {
-      const checkboxes = document.querySelectorAll('.taller-checkbox');
-      const seleccionadosContainer = document.getElementById('talleres-seleccionados');
-      const hiddenInput = document.getElementById('talleres-seleccionados-input');
-      
-      checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-          updateTalleresSeleccionados();
-        });
-      });
-      
-      function updateTalleresSeleccionados() {
-        const seleccionados = Array.from(document.querySelectorAll('.taller-checkbox:checked'))
-          .map(cb => cb.value);
-        
-        hiddenInput.value = seleccionados.join(',');
-        
-        if (seleccionados.length === 0) {
-          seleccionadosContainer.innerHTML = '<p>Selecciona talleres de la lista superior</p>';
-          return;
-        }
-        
-        // Obtener nombres de talleres seleccionados
-        const nombresSeleccionados = seleccionados.map(id => {
-          const card = document.querySelector(`.taller-checkbox[value="${id}"]`).closest('.taller-card');
-          return card.querySelector('h3').textContent;
-        });
-        
-        seleccionadosContainer.innerHTML = `
-          <h4>Talleres seleccionados (${seleccionados.length}):</h4>
-          <ul>
-            ${nombresSeleccionados.map(nombre => `<li>${nombre}</li>`).join('')}
-          </ul>
-        `;
-      }
-    }
-  </script>
 </body>
 </html>
