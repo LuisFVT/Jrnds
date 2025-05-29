@@ -6,6 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'] ?? '';
     $email = $_POST['email'] ?? '';
     $telefono = $_POST['telefono'] ?? '';
+    $grado_academico = $_POST['grado_academico'] ?? '';
+    $organizacion = $_POST['organizacion'] ?? '';
+    $presentacion = $_POST['presentacion'] ?? '';
     $carrera = $_POST['carrera'] ?? '';
     $grado_academico = $_POST['grado_academico'] ?? '';
     
@@ -41,14 +44,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     try {
         $stmt = $pdo->prepare("
-            INSERT INTO usuarios (nombre, email, telefono, rol, grado_academico, cv_url, foto_url, carrera)
-            VALUES (?, ?, ?, 'ponente', ?, ?, ?, ?)
+            INSERT INTO usuarios (nombre, email, telefono, rol, grado_academico, organizacion, presentacion, cv_url, foto_url, carrera)
+            VALUES (?, ?, ?, 'ponente', ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             $nombre, 
             $email, 
             $telefono, 
             $grado_academico, 
+            $organizacion,
+            $presentacion,
             $cv_url, 
             $foto_url,
             $carrera

@@ -1,62 +1,55 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pre-registro Ponentes - Jornadas ITP</title>
-  <link rel="stylesheet" href="./../../../styles/main.css">
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const form = document.querySelector('form');
-      form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        try {
-          const formData = new FormData(form);
-          const response = await fetch(form.action, {
-            method: 'POST',
-            body: formData
-          });
-          
-          const result = await response.text();
-          
-          // Si el PHP devuelve un script, lo ejecutamos
-          if (result.includes('<script>')) {
-            document.body.innerHTML += result;
-          } else {
-            alert(result);
-          }
-        } catch (error) {
-          alert('Error al enviar el formulario: ' + error.message);
-        }
-      });
-    });
-  </script>
+  <link rel="stylesheet" href="./../../../styles/PrePonente.css">
 </head>
 <body>
   <header>
     <h1>Pre-registro para ponentes</h1>
     <nav>
-    <a href="./../../../index.html">Inicio</a>
+      <a href="./../../../index.html">Inicio</a>
     </nav>
   </header>
 
   <section>
-    <form action="./../../../api/procesar_preregistro_ponente.php" method="POST" enctype="multipart/form-data">
-      <label>Nombre completo:
+    <div id="successAlert" class="alert alert-success"></div>
+    <div id="errorAlert" class="alert alert-error"></div>
+    
+    <form id="ponenteForm" action="./../../../api/procesar_preregistro_ponente.php" method="POST" enctype="multipart/form-data">
+      <h2>Datos personales</h2>
+      
+      <label class="required">Nombre completo:
         <input type="text" name="nombre" required>
       </label>
 
-      <label>Correo electrónico:
-        <input type="email" name="email" required>
+      <label class="required">Grado académico:
+        <select name="grado_academico" required>
+          <option value="">Seleccione una opción</option>
+          <option value="Licenciatura">Licenciatura</option>
+          <option value="Maestría">Maestría</option>
+          <option value="Doctorado">Doctorado</option>
+          <option value="Otro">Otro</option>
+        </select>
       </label>
 
       <label>Número de teléfono:
-        <input type="tel" name="telefono">
+        <input type="tel" name="telefono" pattern="[0-9]{10}" title="Ingrese un número de 10 dígitos">
+      </label>  
+
+      <label class="required">Correo electrónico:
+        <input type="email" name="email" required>
       </label>
 
-      <label>Área de especialización:
+      <label class="required">Institución/Organización:
+        <input type="text" name="institucion" required>
+      </label>
+      
+      <label class="required">Área de especialización:
         <select name="carrera" required>
+          <option value="">Seleccione una opción</option>
           <option value="tics">TICs</option>
           <option value="industrial">Industrial</option>
           <option value="electrica">Eléctrica</option>
@@ -68,24 +61,50 @@
           <option value="otro">Otra área</option>
         </select>
       </label>
-
-      <label>Grado académico:
-        <select name="grado_academico" required>
-          <option value="Licenciatura">Licenciatura</option>
-          <option value="Maestría">Maestría</option>
-          <option value="Doctorado">Doctorado</option>
-          <option value="Otro">Otro</option>
-        </select>
+      
+      <label class="required">Escribe una breve presentación de ti:
+        <textarea name="presentacion" rows="4" required placeholder="Mínimo 50 caracteres"></textarea>
       </label>
 
-      <label>Curriculum Vitae (PDF):
+      <h2>Propuesta de participación</h2>
+      
+      <div>
+        <label class="required">Tipo de participación:</label>
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" name="tipo_participacion[]" value="taller">
+            Taller
+          </label>
+          <label>
+            <input type="checkbox" name="tipo_participacion[]" value="conferencia">
+            Conferencia
+          </label>
+        </div>
+      </div>
+
+      <label class="required">Tema a desarrollar:
+        <textarea name="tema" rows="2" required></textarea>
+      </label>
+
+      <label class="required">Duración estimada (horas):
+        <input type="number" name="duracion" min="0.5" max="8" step="0.5" required>
+      </label>
+
+      <h2>Documentos requeridos</h2>
+      
+      <label class="required">Curriculum Vitae (PDF, máximo 5MB):
         <input type="file" name="cv_url" accept=".pdf" required>
       </label>
 
-      <label>Foto de perfil:
-        <input type="file" name="foto_url" accept="image/*" required>
+      <label class="required">Foto de perfil (JPG/PNG, máximo 2MB):
+        <input type="file" name="foto_url" accept="image/jpeg, image/png" required>
       </label>
-
+      
+      <div class="loading" id="loadingIndicator">
+        <div class="spinner"></div>
+        <p>Enviando datos, por favor espere...</p>
+      </div>
+      
       <button type="submit">Enviar pre-registro</button>
     </form>
   </section>
@@ -93,5 +112,7 @@
   <footer>
     <p>© Instituto Tecnológico de Puebla</p>
   </footer>
+
+<script src="./../../../js/PrePonente.js"></script>
 </body>
 </html>
