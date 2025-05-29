@@ -1,5 +1,8 @@
+
+
+
 <?php
-// api/procesar_registro.php
+// api/procesar_registro.php este no 
 require 'config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

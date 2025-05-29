@@ -1,0 +1,90 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f9;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero section */
+.hero {
+  background-color: #004080;
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Main layout */
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+}
+
+/* Container for each registration option */
+.container {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  max-width: 90%;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* SVG Icons */
+.icon {
+  width: 80px;
+  height: 80px;
+  fill: #007BFF;
+  margin-bottom: 1rem;
+}
+
+/* Heading and text */
+.container h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.container p {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+/* Button style */
+.option-button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #007BFF;
+  color: white;
+  text-decoration: none;
+  border-radius: 999px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.option-button:hover {
+  background-color: #005bb5;
+}
