@@ -68,6 +68,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Paquete no encontrado");
         }
     }
+
+    // Obtener datos del paquete seleccionado
+    $stmt_paquete_info = $pdo->prepare("SELECT precio_base, descuento, fecha_inicio_descuento, fecha_fin_descuento FROM paquetes WHERE id = ?");
+    $stmt_paquete_info->execute([$paquete_id]);
+    $paquete_info = $stmt_paquete_info->fetch(PDO::FETCH_ASSOC);
+
+    if ($paquete_info) {
+        $subtotal = $paquete_info['precio_base'];
+        $descuento_aplicado = 0;
+        $precio_final = $subtotal;
+
+        // Verificar si hay descuento vigente
+        $hoy = date('Y-m-d');
+        if (
+            !empty($paquete_info['descuento']) &&
+            !empty($paquete_info['fecha_inicio_descuento']) &&
+            !empty($paquete_info['fecha_fin_descuento']) &&
+            $hoy >= $paquete_info['fecha_inicio_descuento'] &&
+            $hoy <= $paquete_info['fecha_fin_descuento']
+        ) {
+            $descuento_aplicado = $paquete_info['descuento'];
+            $precio_final = $subtotal - $descuento_aplicado;
+            if ($precio_final < 0) $precio_final = 0;
+        }
+    } else {
+        die("No se encontró información del paquete.");
+    }
  
 
     try {
