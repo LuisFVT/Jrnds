@@ -1,33 +1,4 @@
-<!--
-  PreRegistroTec.html
 
-  Descripción:
-  Página de pre-registro para estudiantes del Instituto Tecnológico de Puebla (ITP) en el marco de las Jornadas ITP.
-  Permite a los estudiantes ingresar sus datos personales, seleccionar su carrera y elegir un paquete de talleres disponibles.
-
-  Estructura:
-  - Encabezado (header): Título de la página y enlace de navegación a la página de inicio.
-  - Sección principal (section): Formulario de pre-registro que incluye:
-      - Nombre completo (campo de texto, requerido)
-      - Correo institucional (campo de email, requerido, restringido a dominio @puebla.tecnm.mx)
-      - Número de control (campo de texto, requerido)
-      - Número de teléfono (campo de teléfono, opcional)
-      - Carrera (lista desplegable, requerido)
-      - Selección de paquete de talleres (cargados dinámicamente mediante JavaScript)
-      - Campo oculto para almacenar los talleres seleccionados
-      - Botón para enviar el formulario
-  - Pie de página (footer): Información de derechos de autor.
-
-  Recursos:
-  - Hojas de estilo CSS para el diseño general, talleres y formulario de pre-registro.
-  - Font Awesome para iconos.
-  - Script JavaScript (paquetes.js) encargado de cargar y gestionar la selección de talleres.
-
-  Notas:
-  - El formulario envía los datos mediante POST al archivo procesar_preregistro.php.
-  - El campo de correo valida que el usuario utilice el correo institucional del ITP.
-  - Los talleres se cargan dinámicamente en el div con id "talleres-lista".
--->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,7 +15,7 @@
   <header>
     <h1>Pre-registro para estudiantes</h1>
     <nav>
-      <a href="./../../../../index.html">Inicio</a>
+      <a href="./../../../index.html">Inicio</a>
     </nav>
   </header>
 
