@@ -1,4 +1,4 @@
-
+// Archivo: js/paquetes.js
         // Función para calcular el precio con descuento si aplica
         function calcularPrecio(paquete) {
           const hoy = new Date();
@@ -65,12 +65,21 @@
             }
           });
 
-        // Guardar talleres seleccionados en el input oculto
-        document.addEventListener('change', function(e) {
-          if (e.target.classList.contains('taller-checkbox')) {
-            const seleccionados = Array.from(document.querySelectorAll('.taller-checkbox:checked'))
-              .map(cb => cb.value);
-            document.getElementById('talleres-seleccionados-input').value = seleccionados.join(',');
-          }
-        });
+// Guardar talleres seleccionados en el input oculto y permitir solo una selección
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('taller-checkbox')) {
+    // Si se está marcando este checkbox, desmarcar los demás
+    if (e.target.checked) {
+      const checkboxes = document.querySelectorAll('.taller-checkbox');
+      checkboxes.forEach(cb => {
+        if (cb !== e.target) cb.checked = false;
+      });
+    }
+
+    // Actualizar input oculto
+    const seleccionados = Array.from(document.querySelectorAll('.taller-checkbox:checked'))
+      .map(cb => cb.value);
+    document.getElementById('talleres-seleccionados-input').value = seleccionados.join(',');
+  }
+});
 
