@@ -1,0 +1,39 @@
+# Tecnologías y versiones utilizadas en el proyecto
+
+- PHP: 8.x
+- Apache: 2.4.x (incluido en XAMPP)
+- MySQL: 8.x (incluido en XAMPP)
+- XAMPP: 8.x para Windows
+- Sistema operativo: Windows 10/11
+- Navegador recomendado: Google Chrome, Mozilla Firefox
+
+# Ubicación del proyecto
+Ruta: /c:/xampp/htdocs/Jornadas/Jornadas_ITP_1/htdods
+
+# Estructura del proyecto
+# (Agrega aquí la estructura de carpetas y archivos principales)
+
+# Funcionamiento del proyecto
+- El usuario accede a la aplicación web a través de su navegador.
+- El servidor Apache procesa las solicitudes y ejecuta los scripts PHP.
+- PHP se conecta a la base de datos MySQL para almacenar y recuperar información.
+- La interfaz de usuario permite gestionar jornadas, inscripciones y consultas.
+- Los datos se muestran dinámicamente y se pueden modificar según los permisos del usuario.
+
+# Tecnologías adicionales utilizadas
+- HTML5 y CSS3 para la estructura y estilos de la interfaz.
+- JavaScript para la interacción dinámica en el frontend.
+
+# Requisitos previos para la instalación
+- Tener instalado XAMPP 8.x en Windows 10/11.
+- Activar los módulos de Apache y MySQL desde el panel de control de XAMPP.
+- Clonar o copiar el proyecto en la ruta especificada.
+- Crear la base de datos y tablas necesarias (ver archivo de migración o script SQL incluido).
+- Configurar los parámetros de conexión a la base de datos en el archivo de configuración del proyecto.
+
+# Buenas prácticas y recomendaciones
+- Mantener actualizado XAMPP y sus componentes.
+- Realizar copias de seguridad periódicas de la base de datos.
+- Utilizar contraseñas seguras para el acceso a la base de datos.
+- Documentar cualquier cambio realizado en el código o la estructura del proyecto.
+- Seguir una convención de nombres clara para archivos y carpetas.
