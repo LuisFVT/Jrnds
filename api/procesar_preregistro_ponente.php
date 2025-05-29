@@ -7,13 +7,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         // Validar campos requeridos
         $required = [
-            'nombre', 'email', 'telefono', 'grado_academico', 
-            'institucion', 'presentacion', 'carrera', 'tema', 
-            'duracion', 'tipo_participacion'
+            'nombre', 'email', 'grado_academico', 'institucion', 
+            'carrera', 'presentacion', 'titulo', 'tema', 'duracion',
+            'tipo_participacion', 'cv_url', 'foto_url'
         ];
         
         foreach ($required as $field) {
-            if (empty($_POST[$field])) {
+            if (empty($_POST[$field]) && !isset($_FILES[$field])) {
                 throw new Exception("El campo $field es requerido");
             }
         }
@@ -23,17 +23,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("El correo electrónico no es válido");
         }
 
+        // Validar longitud mínima
+        if (strlen($_POST['presentacion']) < 50) {
+            throw new Exception("La presentación debe tener al menos 50 caracteres");
+        }
+
+        if (strlen($_POST['titulo']) < 10) {
+            throw new Exception("El título debe tener al menos 10 caracteres");
+        }
+
+        if (strlen($_POST['tema']) < 10) {
+            throw new Exception("El tema debe tener al menos 10 caracteres");
+        }
+
+        // Validar tipo de participación
+        if (!is_array($_POST['tipo_participacion'])) {
+            throw new Exception("Seleccione al menos un tipo de participación");
+        }
+
         // Procesar datos
         $nombre = htmlspecialchars($_POST['nombre']);
         $email = htmlspecialchars($_POST['email']);
-        $telefono = htmlspecialchars($_POST['telefono']);
+        $telefono = htmlspecialchars($_POST['telefono'] ?? '');
         $grado_academico = htmlspecialchars($_POST['grado_academico']);
         $organizacion = htmlspecialchars($_POST['institucion']);
         $presentacion = htmlspecialchars($_POST['presentacion']);
         $carrera = htmlspecialchars($_POST['carrera']);
+        $titulo = htmlspecialchars($_POST['titulo']);
         $tema = htmlspecialchars($_POST['tema']);
         $duracion = floatval($_POST['duracion']);
-        $tipos = is_array($_POST['tipo_participacion']) ? $_POST['tipo_participacion'] : [];
+        $tipos = $_POST['tipo_participacion'];
 
         // Directorio para archivos
         $uploadDir = __DIR__ . '/../uploads/ponentes/';
@@ -44,11 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Procesar CV
         $cv_url = '';
         if (isset($_FILES['cv_url']) && $_FILES['cv_url']['error'] === UPLOAD_ERR_OK) {
-            $allowedExtensions = ['pdf', 'doc', 'docx'];
+            $allowedExtensions = ['pdf'];
             $cvExtension = strtolower(pathinfo($_FILES['cv_url']['name'], PATHINFO_EXTENSION));
             
             if (!in_array($cvExtension, $allowedExtensions)) {
-                throw new Exception("Formato de CV no permitido. Use PDF o DOC");
+                throw new Exception("Formato de CV no permitido. Solo se acepta PDF");
+            }
+            
+            if ($_FILES['cv_url']['size'] > 5 * 1024 * 1024) {
+                throw new Exception("El CV no debe exceder 5MB");
             }
             
             $cvFilename = 'cv_' . time() . '_' . preg_replace('/[^a-zA-Z0-9]/', '_', $nombre) . '.' . $cvExtension;
@@ -62,11 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Procesar foto
         $foto_url = '';
         if (isset($_FILES['foto_url']) && $_FILES['foto_url']['error'] === UPLOAD_ERR_OK) {
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
             $fotoExtension = strtolower(pathinfo($_FILES['foto_url']['name'], PATHINFO_EXTENSION));
             
             if (!in_array($fotoExtension, $allowedExtensions)) {
-                throw new Exception("Formato de foto no permitido. Use JPG, PNG o GIF");
+                throw new Exception("Formato de foto no permitido. Use JPG o PNG");
+            }
+            
+            if ($_FILES['foto_url']['size'] > 2 * 1024 * 1024) {
+                throw new Exception("La foto no debe exceder 2MB");
             }
             
             $fotoFilename = 'foto_' . time() . '_' . preg_replace('/[^a-zA-Z0-9]/', '_', $nombre) . '.' . $fotoExtension;
@@ -79,48 +106,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->beginTransaction();
 
-        // Verificar si el usuario ya existe
-        $stmtCheck = $pdo->prepare("SELECT id FROM usuarios WHERE email = ?");
-        $stmtCheck->execute([$email]);
-        $existingUser = $stmtCheck->fetch();
+        // Insertar nuevo usuario
+        $stmt = $pdo->prepare("
+            INSERT INTO usuarios 
+            (nombre, email, telefono, rol, grado_academico, 
+             organizacion, presentacion, cv_url, foto_url, carrera)
+            VALUES (?, ?, ?, 'ponente', ?, ?, ?, ?, ?, ?)
+        ");
+        $stmt->execute([
+            $nombre, $email, $telefono, $grado_academico,
+            $organizacion, $presentacion, $cv_url, $foto_url, $carrera
+        ]);
+        $ponente_id = $pdo->lastInsertId();
 
-        if ($existingUser) {
-            // Actualizar usuario existente
-            $ponente_id = $existingUser['id'];
-            $stmt = $pdo->prepare("
-                UPDATE usuarios SET 
-                    nombre = ?, 
-                    telefono = ?, 
-                    grado_academico = ?, 
-                    organizacion = ?, 
-                    presentacion = ?, 
-                    cv_url = COALESCE(?, cv_url), 
-                    foto_url = COALESCE(?, foto_url), 
-                    carrera = ?
-                WHERE id = ?
-            ");
-            $stmt->execute([
-                $nombre, $telefono, $grado_academico, $organizacion,
-                $presentacion, $cv_url, $foto_url, $carrera, $ponente_id
-            ]);
-        } else {
-            // Insertar nuevo usuario
-            $stmt = $pdo->prepare("
-                INSERT INTO usuarios 
-                (nombre, email, telefono, rol, grado_academico, organizacion, presentacion, cv_url, foto_url, carrera)
-                VALUES (?, ?, ?, 'ponente', ?, ?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([
-                $nombre, $email, $telefono, $grado_academico,
-                $organizacion, $presentacion, $cv_url, $foto_url, $carrera
-            ]);
-            $ponente_id = $pdo->lastInsertId();
-        }
-
-        // Eliminar participaciones anteriores
-        $pdo->prepare("DELETE FROM eventos WHERE ponente_id = ?")->execute([$ponente_id]);
-
-        // Insertar nuevos eventos
+        // Insertar eventos para cada tipo de participación
         foreach ($tipos as $tipo) {
             $tipo_evento = htmlspecialchars($tipo);
             $nombre_evento = ucfirst($tipo_evento) . ' de ' . $nombre;
@@ -130,12 +129,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmtEvento = $pdo->prepare("
                 INSERT INTO eventos 
-                (tipo, nombre, tema_principal, descripcion, fecha_hora_inicio, fecha_hora_fin, duracion_horas, ponente_id, modalidad)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (tipo, nombre, titulo, tema_principal, descripcion, 
+                 fecha_hora_inicio, fecha_hora_fin, duracion_horas, 
+                 ponente_id, modalidad, estatus)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendiente')
             ");
+            
             $stmtEvento->execute([
-                $tipo_evento, $nombre_evento, $tema, $presentacion,
-                $fecha_hora_inicio, $fecha_hora_fin, $duracion, $ponente_id, $modalidad
+                $tipo_evento, 
+                $nombre_evento, 
+                $titulo,
+                $tema,
+                $presentacion,
+                $fecha_hora_inicio, 
+                $fecha_hora_fin, 
+                $duracion, 
+                $ponente_id, 
+                $modalidad
             ]);
         }
 
@@ -144,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode([
             'success' => true,
             'message' => 'Registro exitoso. Será redirigido en breve.',
-            'redirectUrl' => '../../../index.html'
+            'redirectUrl' => './../../../index.html'
         ]);
         
     } catch (Exception $e) {
@@ -152,10 +162,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Eliminar archivos subidos si hubo error
         if (!empty($cv_url) && file_exists(__DIR__ . '/../' . $cv_url)) {
-            unlink(__DIR__ . '/../' . $cv_url);
+            @unlink(__DIR__ . '/../' . $cv_url);
         }
         if (!empty($foto_url) && file_exists(__DIR__ . '/../' . $foto_url)) {
-            unlink(__DIR__ . '/../' . $foto_url);
+            @unlink(__DIR__ . '/../' . $foto_url);
         }
         
         http_response_code(400);

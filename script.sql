@@ -66,7 +66,8 @@ CREATE TABLE `eventos` (
   `id` int(11) NOT NULL,
   `tipo` enum('jornada','conferencia','taller') NOT NULL,
   `parent_id` int(11) DEFAULT NULL,
-  `nombre` varchar(200) NOT NULL,
+  `nombre` varchar(200) NOT NULL, -- Nombre del evento del tema
+  'titulo' varchar(200) DEFAULT NULL, -- Título del evento, opcional
   `tema_principal` varchar(200) NOT NULL,
   `descripcion` text NOT NULL,
   `fecha_hora_inicio` datetime NOT NULL,

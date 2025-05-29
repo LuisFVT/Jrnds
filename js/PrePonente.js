@@ -16,6 +16,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Validar formulario
     function validateForm() {
+        // Validar campos de texto
+        const textFields = [
+            { name: 'nombre', min: 1, message: 'Nombre completo es requerido' },
+            { name: 'presentacion', min: 50, message: 'La presentación debe tener al menos 50 caracteres' },
+            { name: 'titulo', min: 10, message: 'El título debe tener al menos 10 caracteres' },
+            { name: 'tema', min: 10, message: 'El tema debe tener al menos 10 caracteres' }
+        ];
+
+        for (const field of textFields) {
+            const value = form.elements[field.name].value.trim();
+            if (value.length < field.min) {
+                showAlert(errorAlert, field.message);
+                return false;
+            }
+        }
+
+        // Validar selects
+        const selectFields = [
+            { name: 'grado_academico', message: 'Grado académico es requerido' },
+            { name: 'carrera', message: 'Área de especialización es requerida' }
+        ];
+
+        for (const field of selectFields) {
+            if (!form.elements[field.name].value) {
+                showAlert(errorAlert, field.message);
+                return false;
+            }
+        }
+
         // Validar checkboxes
         const checkboxes = form.querySelectorAll('input[name="tipo_participacion[]"]:checked');
         if (checkboxes.length === 0) {
@@ -23,23 +52,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
 
-        // Validar presentación
-        const presentacion = form.elements['presentacion'].value;
-        if (presentacion.length < 100) {
-            showAlert(errorAlert, 'La presentación debe tener al menos 100 caracteres');
-            return false;
-        }
-
         // Validar archivos
         const cvFile = form.elements['cv_url'].files[0];
         const fotoFile = form.elements['foto_url'].files[0];
         
-        if (cvFile && cvFile.size > 5 * 1024 * 1024) {
+        if (!cvFile) {
+            showAlert(errorAlert, 'El CV es requerido');
+            return false;
+        }
+        
+        if (cvFile.size > 5 * 1024 * 1024) {
             showAlert(errorAlert, 'El CV no debe exceder 5MB');
             return false;
         }
         
-        if (fotoFile && fotoFile.size > 2 * 1024 * 1024) {
+        if (!fotoFile) {
+            showAlert(errorAlert, 'La foto es requerida');
+            return false;
+        }
+        
+        if (fotoFile.size > 2 * 1024 * 1024) {
             showAlert(errorAlert, 'La foto no debe exceder 2MB');
             return false;
         }
@@ -54,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!validateForm()) return;
 
         try {
-            loadingIndicator.style.display = 'block';
+            loadingIndicator.style.display = 'flex';
             submitButton.disabled = true;
 
             const formData = new FormData(form);
@@ -64,50 +96,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             });
 
-            // Verificar el tipo de contenido de la respuesta
-            const contentType = response.headers.get('content-type');
+            const result = await response.json();
             
-            if (contentType && contentType.includes('application/json')) {
-                const result = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(result.message || `Error del servidor (${response.status})`);
-                }
+            if (!response.ok) {
+                throw new Error(result.message || `Error del servidor (${response.status})`);
+            }
 
-                if (result.success) {
-                    showAlert(successAlert, result.message);
-                    
-                    // Redirección si está especificada
-                    if (result.redirectUrl) {
-                        setTimeout(() => {
-                            window.location.href = result.redirectUrl;
-                        }, 2000);
-                    }
-                } else {
-                    throw new Error(result.message || 'Error al procesar la solicitud');
+            if (result.success) {
+                showAlert(successAlert, result.message);
+                
+                // Deshabilitar formulario después de éxito
+                form.querySelectorAll('input, textarea, button, select').forEach(el => {
+                    el.disabled = true;
+                });
+                
+                // Redirección
+                if (result.redirectUrl) {
+                    setTimeout(() => {
+                        window.location.href = result.redirectUrl;
+                    }, 2000);
                 }
             } else {
-                // Fallback para respuestas no JSON (compatibilidad con versiones anteriores)
-                const text = await response.text();
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = text;
-                const scripts = tempDiv.getElementsByTagName('script');
-                
-                if (scripts.length > 0) {
-                    // Ejecutar el script de respuesta
-                    eval(scripts[0].innerHTML);
-                } else {
-                    throw new Error('La respuesta del servidor no fue válida');
-                }
+                throw new Error(result.message || 'Error al procesar la solicitud');
             }
         } catch (error) {
             console.error('Error completo:', error);
             showAlert(errorAlert, error.message || 'Error al enviar el formulario');
-            
-            // Mostrar detalles técnicos en consola
-            if (error.response) {
-                console.error('Detalles de la respuesta:', await error.response.text());
-            }
         } finally {
             loadingIndicator.style.display = 'none';
             submitButton.disabled = false;
@@ -116,41 +130,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Configurar validaciones en tiempo real
     function setupValidations() {
-        // Validación de presentación
-        form.elements['presentacion'].addEventListener('input', function() {
-            this.setCustomValidity(this.value.length < 100 ? 
-                'La presentación debe tener al menos 100 caracteres' : '');
-        });
+        // Validar campos mientras se escribe
+        const validateField = (field, minLength) => {
+            const isValid = field.value.trim().length >= minLength;
+            const label = field.closest('label');
+            if (label) {
+                label.classList.toggle('invalid', !isValid);
+            }
+        };
 
-        // Validación de archivos
-        form.elements['cv_url'].addEventListener('change', function() {
-            if (this.files[0]?.size > 5 * 1024 * 1024) {
-                this.setCustomValidity('El CV no debe exceder 5MB');
-                showAlert(errorAlert, 'El CV no debe exceder 5MB');
-            } else {
-                this.setCustomValidity('');
+        // Campos de texto
+        const textFields = [
+            { element: form.elements['presentacion'], min: 50 },
+            { element: form.elements['titulo'], min: 10 },
+            { element: form.elements['tema'], min: 10 }
+        ];
+
+        textFields.forEach(({element, min}) => {
+            if (element) {
+                element.addEventListener('input', () => validateField(element, min));
             }
         });
 
-        form.elements['foto_url'].addEventListener('change', function() {
-            if (this.files[0]?.size > 2 * 1024 * 1024) {
-                this.setCustomValidity('La foto no debe exceder 2MB');
-                showAlert(errorAlert, 'La foto no debe exceder 2MB');
-            } else {
-                this.setCustomValidity('');
-            }
-        });
-
-        // Validación de checkboxes
-        const checkboxes = form.querySelectorAll('input[name="tipo_participacion[]"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                const checked = form.querySelectorAll('input[name="tipo_participacion[]"]:checked');
-                if (checked.length === 0) {
-                    showAlert(errorAlert, 'Seleccione al menos un tipo de participación');
-                }
+        // Validar checkboxes
+        const checkboxContainer = document.querySelector('.checkbox-group');
+        if (checkboxContainer) {
+            const checkboxes = form.querySelectorAll('input[name="tipo_participacion[]"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const checked = form.querySelectorAll('input[name="tipo_participacion[]"]:checked');
+                    checkboxContainer.classList.toggle('invalid', checked.length === 0);
+                });
             });
-        });
+        }
+
+        // Validar archivos
+        const validateFile = (input, maxSize) => {
+            const file = input.files[0];
+            const isValid = file && file.size <= maxSize;
+            const label = input.closest('label');
+            if (label) {
+                label.classList.toggle('invalid', !isValid);
+            }
+        };
+
+        const cvInput = form.elements['cv_url'];
+        if (cvInput) {
+            cvInput.addEventListener('change', () => validateFile(cvInput, 5 * 1024 * 1024));
+        }
+
+        const fotoInput = form.elements['foto_url'];
+        if (fotoInput) {
+            fotoInput.addEventListener('change', () => validateFile(fotoInput, 2 * 1024 * 1024));
+        }
     }
 
     // Inicializar
