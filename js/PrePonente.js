@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const textFields = [
             { name: 'nombre', min: 1, message: 'Nombre completo es requerido' },
             { name: 'presentacion', min: 50, message: 'La presentación debe tener al menos 50 caracteres' },
-            { name: 'titulo', min: 10, message: 'El título debe tener al menos 10 caracteres' },
+            { name: 'nombre_evento', min: 10, message: 'El nombre del evento debe tener al menos 10 caracteres' },
             { name: 'tema', min: 10, message: 'El tema debe tener al menos 10 caracteres' }
         ];
 
@@ -45,32 +45,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Validar checkboxes
-        const checkboxes = form.querySelectorAll('input[name="tipo_participacion[]"]:checked');
-        if (checkboxes.length === 0) {
-            showAlert(errorAlert, 'Debe seleccionar al menos un tipo de participación');
+        // Validar tipo de participación (radio)
+        const tipoParticipacion = form.elements['tipo_participacion'].value;
+        if (!tipoParticipacion) {
+            showAlert(errorAlert, 'Debe seleccionar un tipo de participación');
             return false;
         }
 
         // Validar archivos
         const cvFile = form.elements['cv_url'].files[0];
         const fotoFile = form.elements['foto_url'].files[0];
-        
+
         if (!cvFile) {
             showAlert(errorAlert, 'El CV es requerido');
             return false;
         }
-        
+
         if (cvFile.size > 5 * 1024 * 1024) {
             showAlert(errorAlert, 'El CV no debe exceder 5MB');
             return false;
         }
-        
+
         if (!fotoFile) {
             showAlert(errorAlert, 'La foto es requerida');
             return false;
         }
-        
+
         if (fotoFile.size > 2 * 1024 * 1024) {
             showAlert(errorAlert, 'La foto no debe exceder 2MB');
             return false;
@@ -90,26 +90,26 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.disabled = true;
 
             const formData = new FormData(form);
-            
+
             const response = await fetch(form.action, {
                 method: 'POST',
                 body: formData
             });
 
             const result = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(result.message || `Error del servidor (${response.status})`);
             }
 
             if (result.success) {
                 showAlert(successAlert, result.message);
-                
+
                 // Deshabilitar formulario después de éxito
                 form.querySelectorAll('input, textarea, button, select').forEach(el => {
                     el.disabled = true;
                 });
-                
+
                 // Redirección
                 if (result.redirectUrl) {
                     setTimeout(() => {
@@ -142,27 +142,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Campos de texto
         const textFields = [
             { element: form.elements['presentacion'], min: 50 },
-            { element: form.elements['titulo'], min: 10 },
+            { element: form.elements['nombre_evento'], min: 10 },
             { element: form.elements['tema'], min: 10 }
         ];
 
-        textFields.forEach(({element, min}) => {
+        textFields.forEach(({ element, min }) => {
             if (element) {
                 element.addEventListener('input', () => validateField(element, min));
             }
         });
-
-        // Validar checkboxes
-        const checkboxContainer = document.querySelector('.checkbox-group');
-        if (checkboxContainer) {
-            const checkboxes = form.querySelectorAll('input[name="tipo_participacion[]"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', () => {
-                    const checked = form.querySelectorAll('input[name="tipo_participacion[]"]:checked');
-                    checkboxContainer.classList.toggle('invalid', checked.length === 0);
-                });
-            });
-        }
 
         // Validar archivos
         const validateFile = (input, maxSize) => {

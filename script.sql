@@ -66,18 +66,17 @@ CREATE TABLE `eventos` (
   `id` int(11) NOT NULL,
   `tipo` enum('jornada','conferencia','taller') NOT NULL,
   `parent_id` int(11) DEFAULT NULL,
-  `nombre` varchar(200) NOT NULL, -- Nombre del evento del tema
-  'titulo' varchar(200) DEFAULT NULL, -- Título del evento, opcional
-  `tema_principal` varchar(200) NOT NULL,
-  `descripcion` text NOT NULL,
-  `fecha_hora_inicio` datetime NOT NULL,
-  `fecha_hora_fin` datetime NOT NULL,
-  `duracion_horas` float DEFAULT NULL,
-  `ponente_id` int(11) DEFAULT NULL,
-  `modalidad` enum('presencial','virtual') NOT NULL,
-  `enlace_pdf` varchar(255) DEFAULT NULL,
-  `es_vigente` tinyint(1) DEFAULT 0,
-  `estatus` enum('pendiente','aprobado','rechazado') DEFAULT 'pendiente'
+  `nombre_evento` varchar(200) NOT NULL, -- Nombre del evento del tema
+  `tema_principal` varchar(200) NOT NULL, -- Tema principal del evento
+  `descripcion` text NOT NULL, -- Descripción del evento
+  `fecha_hora_inicio` datetime NOT NULL, -- Fecha y hora de inicio del evento
+  `fecha_hora_fin` datetime NOT NULL, -- Fecha y hora de fin del evento
+  `duracion_horas` float DEFAULT NULL, -- Duración del evento en horas
+  `ponente_id` int(11) DEFAULT NULL,  -- ID del ponente (NULL si no aplica)
+  `modalidad` enum('presencial','virtual') NOT NULL,    -- Modalidad del evento (presencial o virtual) la pone el admin 
+  `enlace_pdf` varchar(255) DEFAULT NULL,   -- Enlace al PDF del evento (NULL si no aplica)
+  `es_vigente` tinyint(1) DEFAULT 0, -- Indica si el evento está vigente (1) o no (0)
+  `estatus` enum('pendiente','aprobado','rechazado') DEFAULT 'pendiente' -- Estatus del evento (pendiente, aprobado, rechazado)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

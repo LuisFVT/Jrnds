@@ -22,7 +22,7 @@
       <h2>Datos personales</h2>
       
       <label class="required">Nombre completo:
-        <input type="text" name="nombre" required>
+        <input type="text" name="nombre" required minlength="3">
       </label>
 
       <label class="required">Grado académico:
@@ -44,7 +44,7 @@
       </label>
 
       <label class="required">Institución/Organización:
-        <input type="text" name="institucion" required>
+        <input type="text" name="organizacion" required minlength="3">
       </label>
       
       <label class="required">Área de especialización:
@@ -58,41 +58,36 @@
           <option value="logistica">Logística</option>
           <option value="gestion">Gestión</option>
           <option value="administración">Administración</option>
-          <option value="otro">Otra área</option>
         </select>
       </label>
       
-      <label class="required">Escribe una breve presentación de ti:
-        <textarea name="presentacion" rows="4" required placeholder="Mínimo 50 caracteres"></textarea>
+      <label class="required">Breve presentación personal:
+        <textarea name="presentacion" rows="4" required placeholder="Mínimo 50 caracteres" minlength="50"></textarea>
       </label>
 
-      <h2>Nombre de la Presentacion</h2>
+      <h2>Datos de la participación</h2>
 
-<label class="required">Titulo de la Presentacion:
-    <textarea name="titulo" required minlength="10"></textarea>
+      <label class="required">Título del evento:
+        <input type="text" name="nombre_evento" required placeholder="Ej: Taller de Inteligencia Artificial" minlength="10">
+      </label>
 
-  </label>
+      <label class="required">Tema principal:
+        <textarea name="tema" rows="2" required placeholder="Describa el tema central de su participación" minlength="10"></textarea>
+      </label>
+
       <div>
         <label class="required">Tipo de participación:</label>
         <div class="checkbox-group">
           <label>
-            <input type="checkbox" name="tipo_participacion[]" value="taller">
-            Taller
+            <input type="radio" name="tipo_participacion" value="conferencia" required>
+            Conferencia (1.5 horas)
           </label>
           <label>
-            <input type="checkbox" name="tipo_participacion[]" value="conferencia">
-            Conferencia
+            <input type="radio" name="tipo_participacion" value="taller">
+            Taller (20 horas - 5 días de 4 horas cada uno)
           </label>
         </div>
       </div>
-
-      <label class="required">Tema a desarrollar:
-        <textarea name="tema" rows="2" required></textarea>
-      </label>
-
-      <label class="required">Duración estimada (horas):
-        <input type="number" name="duracion" min="0.5" max="8" step="0.5" required>
-      </label>
 
       <h2>Documentos requeridos</h2>
       
@@ -117,6 +112,6 @@
     <p>© Instituto Tecnológico de Puebla</p>
   </footer>
 
-<script src="./../../../js/PrePonente.js"></script>
+  <script src="./../../../js/PrePonente.js"></script>
 </body>
 </html>
