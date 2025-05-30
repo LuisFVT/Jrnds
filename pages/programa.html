@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../styles/programa.css">
+  <title>Programa</title>
+</head>
+<body>
+  <header>
+        <div class="logo-container">
+            <img src="../includes/logos/logoEducacion.webp" alt="Educación" style="cursor: pointer;" onclick="window.location.assign('https://sep.puebla.gob.mx/')">
+            <span class="separator"></span>
+            <img src="../includes/logos/LogoITP.webp" alt="TecNM" style="cursor: pointer;" onclick="window.location.assign('https://www.puebla.tecnm.mx/')">
+            <span class="separator"></span>
+            <img src="../includes/logos/logoTecnm.webp" alt="ITP" style="cursor: pointer;" onclick="window.location.assign('https://www.tecnm.mx/')">
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="../#acerca">Acerca de</a></li>
+            <li><a href="../pages/programa.html">Programa</a></li>
+            <li><a href="../#sede">Sede</a></li>
+            <li><a href="../pages/opcionRegistro.html">Registro</a></li>
+        </ul>
+    </nav>
+
+    <section class="banner">
+        <div class="banner-content">
+            <h1>Conoce nuestros <span style="color: #FFD700;">programas</span></h1> 
+        </div> 
+    </section>
+
+  <section class="card-jornada">
+    <div class="contenedor-jornada" id="jornada-container"></div>
+  </section>
+
+  
+  <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-right">
+                <ul>
+                    <img class="logo" src="../includes/logos/LogoITP.webp" alt="ITP" onclick="window.location.assign('https://www.puebla.tecnm.mx/')">
+                    <li><span>Forma parte de esta experiencia única de aprendizaje y crecimiento profesional</span></li>
+                    <div class="icon-redes">
+                        <h1>Síguenos</h1>
+                        <a href="https://www.facebook.com/TECNMcampusPuebla" target="_blank"><img src="https://img.icons8.com/?size=100&id=118466&format=png&color=ffffff" alt="Facebook"/></a>
+                        <a href="https://www.instagram.com/itpuebla/" target="_blank"><img src="https://img.icons8.com/?size=100&id=32320&format=png&color=ffffff" alt="Instagram"/></a>
+                        <a href="https://www.youtube.com/@tecnmpuebla" target="_blank"><img src="https://img.icons8.com/?size=100&id=37326&format=png&color=ffffff" alt="YouTube"/></a>
+                    </div>
+                </ul>
+                <ul>
+                    <h1>Contacto</h1>
+                    <li>
+                        <div class="icon-contact">
+                            <img class="icon" src="https://img.icons8.com/?size=100&id=vsJyRh6Kp7fZ&format=png&color=ffffff" alt="Ubicacion" />
+                            <span>Del Tecnologico 420, Corredor Industrial la Ciénega, 72220 Heroica Puebla de Zaragoza, Pue.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="icon-contact">
+                            <img class="icon" src="https://img.icons8.com/?size=100&id=60963&format=png&color=ffffff" alt="Telefono" />
+                            <span>222 2298 868</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="icon-contact">
+                            <img class="icon" src="https://img.icons8.com/?size=100&id=12623&format=png&color=ffffff" alt="Email" />
+                            <span>eventos.sistemas@tecnm.mx</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul>
+
+                <ul>
+                    <h1>Sitios de interés</h1>
+                    <li><a href="https://www.puebla.tecnm.mx/">▶︎ Instituto Tecnológico de Puebla</a></li>
+                    <li><a href="https://www.puebla.tecnm.mx/">▶︎ Oferta Académica</a></li>
+                    <li><a href="https://www.puebla.tecnm.mx/convocatoria/">▶︎ Aspirantes</a></li>
+                    <li><a href="https://www.puebla.tecnm.mx/nuevo-ingreso/">▶︎ Estudiantes</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => { 
+   function loadJornada() {
+        fetch('../api/get_jornada_card.php')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('jornada-container').innerHTML = html;
+                initCountdown(); 
+            })
+            .catch(error => {
+                console.error('Error al cargar la fecha:', error);
+            });
+    }
+
+    loadJornada();
+});
+</script>
+
+</body>
+</html>

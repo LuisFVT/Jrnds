@@ -142,7 +142,7 @@ nav ul li a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to right, rgba(77, 77, 170, 0.733), rgba(40, 40, 93, 0.83) 100%), url('../includes/imagenes/jornadas_11.webp');
+    background: linear-gradient(to right, rgba(77, 77, 170, 0.733), rgba(40, 40, 93, 0.83) 100%), url('../includes/imagenes/jornadas_2.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -162,76 +162,83 @@ nav ul li a:hover {
     }
 }
 
-.register {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  min-height: 100vh;
-}
-
-form#registro-form {
-  background-color: #ffffff;
-  padding: 2rem;
+.container {
+  position: relative;
+  background: #fff;
   border-radius: 20px;
-  max-width: 900px;
-  width: 100%;
-  box-shadow: 0 0 20px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 1rem auto;
+  max-width: 500px;
+  text-align: center;
 }
 
-form#registro-form label {
-  display: flex;
-  flex-direction: column;
+.estado-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
   font-weight: bold;
+  color: #fff;
+  background-color: #bbb;
+}
+
+.estado-activo {
+  background-color: #ffcc00; 
+}
+
+.estado-archivo {
+  background-color: #bbb; 
+}
+
+.card h1 {
+  font-size: 1.5rem;
   color: #333;
+  margin-bottom: 1rem;
 }
 
-form#registro-form input,
-form#registro-form select {
-  margin-top: 0.5rem;
-  padding: 0.7rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  background-color: #f2f2f2;
-  font-size: 1rem;
+.card .año {
+  color: #ffcc00;
+  font-weight: bold;
+  margin-right: 0.5rem;
 }
 
-.campos-fila {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.icono-evento {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
 }
 
-.campos-fila label {
-  flex: 1;
-  min-width: 250px;
-}
-
-.talleres-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-input[type="submit"],
-button[type="submit"] {
-  margin-top: 1rem;
-  background-color: #007bff;
-  color: white;
-  padding: 0.8rem 2rem;
+button.btn-amarillo {
+  background-color: #ffcc00;
+  color: #fff;
   border: none;
+  padding: 0.7rem 1.4rem;
   border-radius: 25px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center;
+  transition: background 0.3s;
+  font-weight: bold;
 }
 
-input[type="submit"]:hover,
-button[type="submit"]:hover {
+button.btn-amarillo:hover {
+  background-color: #e6b800;
+}
+
+button.btn-azul {
+  background-color: #4672a2;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-weight: bold;
+}
+
+button.btn-azul:hover {
   background-color: #0056b3;
 }
