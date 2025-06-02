@@ -1,39 +1,69 @@
-# Tecnologías y versiones utilizadas en el proyecto
+# Documentación del Proyecto: Jornadas Internacionales de Tecnologías de la Información
 
-- PHP: 8.x
-- Apache: 2.4.x (incluido en XAMPP)
-- MySQL: 8.x (incluido en XAMPP)
-- XAMPP: 8.x para Windows
-- Sistema operativo: Windows 10/11
-- Navegador recomendado: Google Chrome, Mozilla Firefox
+## Descripción General
 
-# Ubicación del proyecto
-Ruta: /c:/xampp/htdocs/Jornadas/Jornadas_ITP_1/htdods
+Este proyecto es una plataforma web para la gestión, difusión y registro de las **Jornadas Internacionales de Tecnologías de la Información** organizadas por el Instituto Tecnológico de Puebla. Permite a estudiantes y ponentes consultar información del evento, visualizar programas, registrarse en talleres/conferencias y gestionar la información relevante de cada edición.
 
-# Estructura del proyecto
-# (Agrega aquí la estructura de carpetas y archivos principales)
+---
 
-# Funcionamiento del proyecto
-- El usuario accede a la aplicación web a través de su navegador.
-- El servidor Apache procesa las solicitudes y ejecuta los scripts PHP.
-- PHP se conecta a la base de datos MySQL para almacenar y recuperar información.
-- La interfaz de usuario permite gestionar jornadas, inscripciones y consultas.
-- Los datos se muestran dinámicamente y se pueden modificar según los permisos del usuario.
+## Estructura del Proyecto
 
-# Tecnologías adicionales utilizadas
-- HTML5 y CSS3 para la estructura y estilos de la interfaz.
-- JavaScript para la interacción dinámica en el frontend.
+- **Frontend:** Interfaz web responsiva para usuarios y administradores.
+- **Backend:** API RESTful para la gestión de datos y lógica de negocio.
+- **Base de datos:** Almacenamiento de usuarios, eventos, inscripciones y constancias.
+- **Módulos principales:** Autenticación, gestión de eventos, inscripciones, generación de constancias, administración.
 
-# Requisitos previos para la instalación
-- Tener instalado XAMPP 8.x en Windows 10/11.
-- Activar los módulos de Apache y MySQL desde el panel de control de XAMPP.
-- Clonar o copiar el proyecto en la ruta especificada.
-- Crear la base de datos y tablas necesarias (ver archivo de migración o script SQL incluido).
-- Configurar los parámetros de conexión a la base de datos en el archivo de configuración del proyecto.
+---
 
-# Buenas prácticas y recomendaciones
-- Mantener actualizado XAMPP y sus componentes.
-- Realizar copias de seguridad periódicas de la base de datos.
-- Utilizar contraseñas seguras para el acceso a la base de datos.
-- Documentar cualquier cambio realizado en el código o la estructura del proyecto.
-- Seguir una convención de nombres clara para archivos y carpetas.
+## Navegación
+
+- **Inicio:** Información general y acceso rápido a eventos destacados.
+- **Programa:** Visualización del cronograma de talleres y conferencias.
+- **Registro/Iniciar sesión:** Acceso para estudiantes, ponentes y administradores.
+- **Mis eventos:** Panel personal para gestionar inscripciones y constancias.
+- **Administración:** Gestión de eventos, usuarios y reportes (solo administradores).
+
+---
+
+## Tecnologías Utilizadas
+
+- **Frontend:** HTML5, CSS3, JavaScript, [Framework sugerido: React.js o Vue.js].
+- **Backend:** Node.js con Express.js (o alternativa como Django/Flask).
+- **Base de datos:** MySQL o PostgreSQL.
+- **Control de versiones:** Git y GitHub.
+- **Despliegue:** Servidor Linux (Ubuntu), Nginx o Apache.
+- **Herramientas adicionales:** Docker para contenedores, Postman para pruebas de API.
+
+---
+
+## Casos de Uso
+
+- **Registro de usuarios:** Estudiantes y ponentes pueden crear cuentas y gestionar su información personal.
+- **Consulta de eventos:** Los usuarios pueden visualizar el programa de actividades, talleres y conferencias.
+- **Inscripción a talleres/conferencias:** Los usuarios pueden inscribirse en las actividades disponibles.
+- **Gestión de eventos:** Los administradores pueden crear, modificar o eliminar eventos y talleres.
+- **Generación de constancias:** El sistema permite generar constancias de participación para los asistentes.
+
+---
+
+## CPM (Carta de Proceso de Mejora)
+
+1. **Identificación de necesidades:** Recopilar requerimientos de los usuarios y organizadores.
+2. **Diseño de la solución:** Elaborar diagramas y prototipos de la plataforma.
+3. **Desarrollo:** Implementar las funcionalidades principales.
+4. **Pruebas:** Realizar pruebas funcionales y de usuario.
+5. **Despliegue:** Publicar la plataforma para su uso.
+6. **Retroalimentación y mejora continua:** Recoger comentarios y actualizar el sistema.
+
+---
+
+## Pasos a Seguir para el Desarrollo
+
+1. **Levantamiento de requerimientos:** Entrevistar a los usuarios clave y documentar necesidades.
+2. **Diseño de la arquitectura:** Definir la estructura del sistema y las tecnologías a utilizar.
+3. **Desarrollo de módulos:** Programar los componentes principales (registro, eventos, inscripciones).
+4. **Integración y pruebas:** Unir los módulos y realizar pruebas de integración.
+5. **Despliegue en servidor:** Configurar el entorno de producción y publicar la plataforma.
+6. **Capacitación y soporte:** Brindar capacitación a los usuarios y soporte técnico.
+
+---
