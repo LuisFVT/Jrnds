@@ -1,36 +1,36 @@
-.double-carousel {
+.double-carousel-jornadas {
   position: relative;
   background: #fff;
   padding: 30px 0;
   overflow: hidden;
 }
 
-.carousel-row {
+.double-carousel-jornadas .carousel-row {
   overflow: hidden;
   white-space: nowrap;
   display: flex;
   width: 100%;
 }
 
-.logo-track {
+.double-carousel-jornadas .logo-track {
   display: flex;
   width: max-content;
   animation: scroll-left 30s linear infinite;
 }
 
-.carousel-row.bottom .logo-track {
+.double-carousel-jornadas .carousel-row.bottom .logo-track {
   animation: scroll-left-alt 30s linear infinite;
 }
 
-.logo-track img {
-  width: 140px;
-  height: 80px;
+.double-carousel-jornadas .logo-track img {
+  width: 300px;         /* Aumenta el ancho */
+  height: 200px;        /* Aumenta el alto */
   object-fit: contain;
-  margin-right: 60px;
+  margin-right: 20px;   /* Reduce el espacio entre imágenes */
   transition: transform 0.3s ease;
 }
 
-.logo-track img:hover {
+.double-carousel-jornadas .logo-track img:hover {
   transform: scale(1);
 }
 

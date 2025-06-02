@@ -11,8 +11,8 @@
 }
 
 .logo-track img {
-  width: 140px;
-  height: 80px;
+  width: 280px;         /* Aumenta el ancho */
+  height: 120px;        /* Aumenta el alto */
   object-fit: contain;
   margin-right: 60px;
   transition: transform 0.3s ease;
