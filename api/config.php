@@ -4,7 +4,7 @@
 // api/config.php
 
 $host = 'localhost';
-$port = '3307'; // Puerto por defecto de MySQL
+$port = '3306'; // Puerto por defecto de MySQL
 $db   = 'jornadas1';
 $user = 'root';
 $pass = ''; // Ajusta si tienes contraseña

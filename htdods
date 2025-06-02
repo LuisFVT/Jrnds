@@ -36,6 +36,46 @@ Este proyecto es una plataforma web para la gestión, difusión y registro de la
 
 ---
 
+
+## Uso de la Plataforma por Tipo de Usuario
+
+### Navegación General
+
+- Accede a la plataforma desde cualquier navegador web moderno.
+- Utiliza el menú principal para navegar entre las secciones: **Inicio**, **Acerca de**, **Programa**, **Sede** y **Registro**.
+- Consulta información relevante del evento, cronogramas y sedes desde la página principal.
+
+---
+
+### Registro de Estudiante
+
+1. Haz clic en **Registro** y selecciona la opción "Registrarse como estudiante".
+2. Completa el formulario con tus datos personales: nombre completo, matrícula, correo institucional (@puebla.tecnm.mx), carrera y teléfono.
+3. Selecciona el paquete/taller de tu interés (solo puedes elegir uno).
+4. Envía el formulario. Recibirás una confirmación en pantalla y, si está habilitado, por correo electrónico.
+5. Consulta y gestiona tus inscripciones desde tu panel personal (si aplica).
+
+---
+
+### Registro de Ponente
+
+1. Haz clic en **Registro** y selecciona "Registrarse como ponente".
+2. Llena el formulario con tus datos personales y profesionales: nombre, grado académico, especialidad, correo, institución, presentación, título y tema de la participación.
+3. Adjunta tu currículum en PDF (máx. 5MB) y una foto de perfil (JPG/PNG, máx. 2MB).
+4. Elige el tipo de participación: conferencia o taller.
+5. Envía tu propuesta. El comité organizador revisará tu solicitud y te notificará el estatus por correo electrónico.
+
+---
+
+### Consulta de Jornadas
+
+- Accede a la sección **Programa** para visualizar el cronograma de talleres y conferencias.
+- Filtra actividades por fecha, tema o ponente.
+- Consulta detalles de cada jornada, incluyendo horarios, ponentes, modalidad y requisitos.
+- Descarga el programa en PDF si está disponible.
+
+---
+
 ## Casos de Uso
 
 - **Registro de usuarios:** Estudiantes y ponentes pueden crear cuentas y gestionar su información personal.
@@ -46,24 +86,30 @@ Este proyecto es una plataforma web para la gestión, difusión y registro de la
 
 ---
 
-## CPM (Carta de Proceso de Mejora)
+## Instrucciones de Uso para Usuarios
 
-1. **Identificación de necesidades:** Recopilar requerimientos de los usuarios y organizadores.
-2. **Diseño de la solución:** Elaborar diagramas y prototipos de la plataforma.
-3. **Desarrollo:** Implementar las funcionalidades principales.
-4. **Pruebas:** Realizar pruebas funcionales y de usuario.
-5. **Despliegue:** Publicar la plataforma para su uso.
-6. **Retroalimentación y mejora continua:** Recoger comentarios y actualizar el sistema.
+### Estudiantes
+
+- Regístrate con tu correo institucional y matrícula.
+- Selecciona solo un paquete/taller disponible.
+
+### Ponentes
+
+- Completa el pre-registro con tus datos y documentos requeridos.
+- Espera la validación de tu propuesta por parte del comité organizador.
+- Recibe notificaciones sobre la aceptación y detalles logísticos de tu participación.
+
+### Administradores
+
+- Accede con tus credenciales administrativas.
+- Gestiona usuarios, eventos, talleres y conferencias desde el panel de administración.
+- Aprueba/rechaza propuestas de ponentes y genera reportes de asistencia y constancias.
 
 ---
 
-## Pasos a Seguir para el Desarrollo
+## Manuales y Ayuda
 
-1. **Levantamiento de requerimientos:** Entrevistar a los usuarios clave y documentar necesidades.
-2. **Diseño de la arquitectura:** Definir la estructura del sistema y las tecnologías a utilizar.
-3. **Desarrollo de módulos:** Programar los componentes principales (registro, eventos, inscripciones).
-4. **Integración y pruebas:** Unir los módulos y realizar pruebas de integración.
-5. **Despliegue en servidor:** Configurar el entorno de producción y publicar la plataforma.
-6. **Capacitación y soporte:** Brindar capacitación a los usuarios y soporte técnico.
+- Consulta la sección de **Ayuda** o **FAQ** en la plataforma para resolver dudas frecuentes.
+- Para soporte técnico, contacta al correo: eventos.sistemas@tecnm.mx
+- Manuales detallados para cada tipo de usuario están disponibles en la sección de documentación interna del sistema.
 
----

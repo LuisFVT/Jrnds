@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jornadas Internacionales</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/carrusel.css">
+    <link rel="stylesheet" href="styles/double-carousel.css">
+      <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
 </head>
 <body>
     <header>
@@ -69,6 +73,13 @@
         </div>
     </section>
 
+<section class="logo-carousel">
+  <div class="logo-track" id="logo-track">
+    <!-- Aquí se insertarán las imágenes con JS -->
+  </div>
+</section>
+    <script src="js/logos.js"></script>
+
     <section class="contenido-2">
         <div class="content-2">
             <div class="info2">
@@ -86,7 +97,18 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>|
+        <!--  -->
+<section class="double-carousel">
+  <div class="carousel-row top">
+    <div class="logo-track" id="logo-track-top"></div>
+  </div>
+  <div class="carousel-row bottom">
+    <div class="logo-track" id="logo-track-bottom"></div>
+  </div>
+  <script src="js/double-carousel.js"></script>
+</section>
+    
 
     <footer class="footer">
         <div class="footer-container">

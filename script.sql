@@ -83,7 +83,7 @@ CREATE TABLE `eventos` (
 -- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `eventos` (`id`, `tipo`, `parent_id`, `nombre`, `tema_principal`, `descripcion`, `fecha_hora_inicio`, `fecha_hora_fin`, `duracion_horas`, `ponente_id`, `modalidad`, `enlace_pdf`, `es_vigente`, `estatus`) VALUES
+INSERT INTO `eventos` (`id`, `tipo`, `parent_id`, `nombre_evento`, `tema_principal`, `descripcion`, `fecha_hora_inicio`, `fecha_hora_fin`, `duracion_horas`, `ponente_id`, `modalidad`, `enlace_pdf`, `es_vigente`, `estatus`) VALUES
 (1, 'jornada', NULL, 'Jornadas Internacionales de Tecnologías de la Información 2024', 'Convergencia de Tecnologías', 'Evento principal que agrupa todas las conferencias y talleres del 11 al 15 de marzo de 2024.', '2024-03-11 09:00:00', '2024-03-15 19:00:00', 50, NULL, 'presencial', '/includes/documentos/jornadas2024.pdf', 1, 'aprobado'),
 (2, 'conferencia', 1, 'Privacidad y seguridad en la era de la IA', 'IA', 'Conferencia sobre seguridad en IA', '2024-03-11 09:00:00', '2024-03-11 10:30:00', 1.5, 1, 'virtual', NULL, 1, 'aprobado'),
 (3, 'conferencia', 1, 'Aplicación de Algoritmos Evolutivos en el Control de Sistemas Electrónicos de Potencia', 'Electrónica', 'Aplicación de algoritmos en sistemas de potencia', '2024-03-11 10:30:00', '2024-03-11 12:00:00', 1.5, 2, 'presencial', NULL, 1, 'aprobado'),

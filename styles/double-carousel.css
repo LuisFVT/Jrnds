@@ -1,0 +1,47 @@
+.double-carousel {
+  position: relative;
+  background: #fff;
+  padding: 30px 0;
+  overflow: hidden;
+}
+
+.carousel-row {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  width: 100%;
+}
+
+.logo-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 30s linear infinite;
+}
+
+.carousel-row.bottom .logo-track {
+  animation: scroll-left-alt 30s linear infinite;
+}
+
+.logo-track img {
+  width: 140px;
+  height: 80px;
+  object-fit: contain;
+  margin-right: 60px;
+  transition: transform 0.3s ease;
+}
+
+.logo-track img:hover {
+  transform: scale(1);
+}
+
+/* Animación estándar (izquierda) */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Animación invertida (desde la izquierda) */
+@keyframes scroll-left-alt {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
